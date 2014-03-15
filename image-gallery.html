@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <!--
+    Click button to select multi images. And all the selected images will be
+    displayed bellow. What's more, every image can be saved to your disk by a
+    simple click.
+    Files of not image will be ignored.
+    Enjoy yourself :)
+    -->
+    <meta charset="utf-8" />
+    <title>Image Gallery</title>
+    <style>
+      * {
+        margin: 0;
+        top: 0;
+        font-size: 1em;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+      #f {
+        display: none;
+      });
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var $f = document.getElementById('f');
+        var $bf = document.getElementById('bf');
+        var $list = document.getElementById('list');
+
+        $bf.addEventListener('click', function () {
+          $f.click();
+        }, false);
+
+        $f.addEventListener('change', function () {
+          [].forEach.call(this.files, function (file) {
+            if (file.type.search('image/') !== 0) return;
+
+            var reader = new FileReader;
+            // read image as DataURL for display
+            reader.onload = function (e) {
+              var img = document.createElement('img');
+              img.src = e.target.result;
+              // read image as ArrayBuffer to `download`
+              reader.onload = function (e) {
+                var a = document.createElement('a');
+                var blob = new Blob([e.target.result], {type: file.type});
+                a.download = file.name;
+                a.href = URL.createObjectURL(blob);
+                a.appendChild(img);
+                $list.appendChild(a);
+              };
+              reader.readAsArrayBuffer(file);
+            };
+            reader.readAsDataURL(file);
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <input type="file" id="f" multiple />
+    <button id="bf">Select Images</button>
+    <div id="list"></div>
+  </body>
+</html>
